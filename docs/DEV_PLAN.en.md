@@ -1,6 +1,6 @@
 # NutriScan MVP — Development Plan
 
-2026-09-26 · v0.5 (two-person edition)
+2026-10-07 · v0.6 (two-person edition)
 
 > Language: English (translation) · [中文（主版本）](./DEV_PLAN.md). The Chinese version is canonical; update both in the same PR.
 
@@ -249,29 +249,29 @@ This section estimates hours and lays out dependencies; it **does not set a sche
 
 | Category | Tasks | Person-hours |
 | --- | --- | --- |
-| Preparation | G-1 – G-3 | 4 |
+| Preparation | G-1 – G-4 | 6 |
 | Phase 0 · Validation | P0-1, P0-2, P0-4 – P0-7 | 11 |
 | Shared contract | C-1 – C-5, C-R | 17.5 |
 | Skeleton and CI | P1-1, P1-2 | 5.5 |
 | Track A: schema, VLM, evaluation, confirm screen | P05-3 – P05-5, P1-4, P1-11 – P1-14, P1-16 | 29 |
 | Track B: scan, OFF, capture, portion, upload, summary | P1-5 – P1-10, P1-17, P1-19 | 25.5 |
 | Integration and demo | I-1, I-2, DEMO-1 | 14 |
-| **Task subtotal** | | **106.5** |
+| **Task subtotal** | | **108.5** |
 | PR review | About 22 PRs × 0.4 h | ~9 |
-| **Total** | | **~116** |
+| **Total** | | **~118** |
 
 Split by person (review excluded; tasks done by both count half for each):
 
 | Owner | Contents | Person-hours |
 | --- | --- | --- |
-| Hannes | Half of G-1 and G-3, G-2; Phase 0 (half of P0-4 and P0-5); C-1 – C-5; skeleton and CI (P1-1, P1-2); Track A; half of I-1, I-2, DEMO-1 | ~68 |
+| Hannes | Half of G-1 and G-3, G-2, G-4; Phase 0 (half of P0-4 and P0-5); C-1 – C-5; skeleton and CI (P1-1, P1-2); Track A; half of I-1, I-2, DEMO-1 | ~70 |
 | mica | Half of G-1 and G-3; half of P0-4 and P0-5; C-R; Track B; half of I-1, I-2, DEMO-1 | ~39 |
 
 Split by convergence point:
 
 | Span | Contents | Person-hours |
 | --- | --- | --- |
-| Up to M0 (Contract merged) | Preparation + shared contract + skeleton and CI | 27 |
+| Up to M0 (Contract merged) | Preparation + shared contract + skeleton and CI | 29 |
 | In parallel with the row above | Phase 0 (the evaluation set must be done before P05-4) | 11 |
 | M0 → M2 (Feature freeze) | Track A + Track B + I-1 + I-2 | 64.5 |
 | M2 → demo | DEMO-1 | 4 |
@@ -347,6 +347,7 @@ flowchart LR
 | G-1 | Decide D16, the division of work and D21 | Both | — | 1+1 |
 | G-2 | GitHub: set up branch protection and rebase-only per the table in CONTRIBUTING; create an issue for every task and a Project board; update CODEOWNERS once the division of work is agreed | Hannes | G-1 | 1.5 |
 | G-3 | Development tools: Hannes uses Claude Max; mica uses the trial pass (expires 10/2), then switches to Pro. API (D21, ADR 0022): create a dedicated NutriScan workspace under Hannes's Startup account, set the monthly limit, one key per person (distributed through the password manager) | Both | — | 0.5 |
+| G-4 | ADR workflow and review conventions: when an ADR gets its own PR, status flow, PR template options; reviewer checklist, comment prefixes, review summary format; toolchain ADRs (e.g. ADR 0025) | Hannes | G-1 | 2 |
 
 #### Phase 0 · Validation
 
