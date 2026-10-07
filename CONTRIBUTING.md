@@ -46,6 +46,42 @@ When unsure, treat it as needing an ADR PR: a small extra PR costs less than rew
 
 Do not add code commits to an ADR PR after it has been approved: "Dismiss stale approvals" is on, so any new commit dismisses the approval, and the decision could not land on `main` on its own. While an ADR PR is open, the author may prototype locally or in a draft PR, but does not request a merge.
 
+### Reviewing a PR
+
+GitHub has no review template file, so reviews follow this checklist and summary format.
+
+**Checklist** (go through what applies):
+
+- **Scope**: matches the task issue; nothing outside it; no changes to directories owned by the other person unless the issue says so.
+- **Commits**: valid prefix, subject at most 72 characters, a `Refs:` line, one layer per commit (§3).
+- **Decisions**: new design decisions follow the [ADR workflow](#adr-workflow).
+- **Shared contracts**: changed only in a dedicated PR; codegen rerun; for drift schema changes, `schemaVersion` bumped with a migration and a migration test (§5).
+- **Secrets and privacy**: no secrets, no `secrets.json`, no photos with EXIF (§6).
+- **Dependencies**: pinned, reason and license stated, compatible with MIT (§7).
+- **Docs**: PRD and DEV_PLAN changed in both languages.
+- **Verified locally**: check out the branch and run `flutter analyze` and `flutter test` in `app/` (prefixed with `fvm` if you use FVM; see §9), plus `pytest` for `schema/` or a build when relevant; run UI changes on a device.
+
+**Comment prefixes**, so the author can tell at a glance what has to change:
+
+| Prefix | Meaning |
+| --- | --- |
+| `blocking:` | Must be fixed before approval |
+| `suggestion:` | Recommended; the author decides |
+| `nit:` | Minor and optional |
+| `question:` | Asking for clarification only |
+
+**Review summary**, written in the body of the approval or change request:
+
+```
+Checked: <what you looked at>
+Ran: <commands and devices, with results>
+Found: <issues, or "none">
+Resolved: <how they were resolved, or what is still open>
+Verdict: approve / request changes
+```
+
+Approve only when no `blocking:` comment is open; otherwise use "Request changes".
+
 ### Branch protection for main
 
 Configure in the GitHub repository settings (owner: DEV_PLAN task G-2):

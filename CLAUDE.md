@@ -56,6 +56,7 @@ All 10 rules in PRD §8 apply. In addition:
 
 - Open PRs against `main` with the PR template filled in.
 - **Always request a review from the other member explicitly**: check the author with `gh api user --jq .login`; if it is `hannesgao`, request `hyhcrh`, otherwise request `hannesgao` (e.g. `gh pr create --reviewer hyhcrh`). CODEOWNERS does not request a review when the author owns every touched directory, so never rely on it.
+- **When reviewing a PR**, follow CONTRIBUTING §2 "Reviewing a PR": go through the checklist, run the checks locally, prefix every comment with `blocking:` / `suggestion:` / `nit:` / `question:`, and write the review summary in the given format.
 
 ## Commits
 
