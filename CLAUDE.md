@@ -40,6 +40,8 @@ All 10 rules in PRD §8 apply. In addition:
 - **Dependencies**: pin versions and commit `pubspec.lock`. Every new dependency needs a reason and its license in the PR description.
 - **Secrets**: read only from the local `secrets.json` (the repository has only `secrets.example.json`). Never put a real secret in code, tests, logs, issues or PR descriptions.
 - **Photos**: bake the EXIF orientation into the pixels, then strip all EXIF (including GPS) before writing to disk.
+- **Flutter toolchain** (ADR 0025): run Flutter as `fvm flutter …` if `fvm` is on `PATH`, otherwise as `flutter …` from `PATH`; never install FVM, Flutter or Dart on your own. Before running checks, confirm that `flutter --version` matches `.fvmrc`; if it does not, stop and tell the user. Use only the Dart SDK bundled with Flutter, and run Flutter commands in `app/`.
+- **`.fvmrc`** (ADR 0025): the Flutter version must be a stable release number and `"flutter"` must be the first key, with no earlier key containing `flutter`. After any command that can rewrite `.fvmrc` (e.g. `fvm use`), open the file and check both; restore the order before committing if needed.
 - **Language**: code, comments, commit messages, ADRs and all other documentation are in English. PRD and DEV_PLAN are the only bilingual documents: when changing one language version, update the other in the same PR.
 
 ## Pull requests
