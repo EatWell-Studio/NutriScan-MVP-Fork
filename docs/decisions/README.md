@@ -31,7 +31,8 @@ Open an ADR PR before writing code for any new design decision, and start coding
 | [0021](./0021-mit-license-for-mvp.md) | D16 MIT license for the MVP phase | Accepted |
 | [0022](./0022-prepaid-api-before-demo.md) | D21 Prepaid API access before the demo (resolves the open question in 0020) | Accepted |
 | [0023](./0023-ci-architecture.md) | D22 CI architecture and commit conventions | Accepted |
-| [0024](./0024-flutter-version-via-fvm.md) | Flutter version management with FVM (refines 0023) | Accepted |
+| [0024](./0024-flutter-version-via-fvm.md) | Flutter version management with FVM (refines 0023) | Accepted; partly superseded by 0025 |
+| [0025](./0025-fvmrc-and-version-managers.md) | `.fvmrc` constraints and other version managers (refines 0024) | Accepted |
 
 ## Template
 
