@@ -22,9 +22,29 @@ Members: `hannesgao` (Hannes) and `hyhcrh` (mica). **External code contributions
 - **Request the other member as reviewer explicitly** when opening a PR (e.g. `gh pr create --reviewer <other>`). CODEOWNERS does not request anyone when the author owns every touched directory.
 - Keep PRs small and complete. Anything found outside the task's scope becomes a new issue, not a drive-by change.
 - **Changes to shared contracts get their own PR**, never mixed with feature code. Shared contracts are: `schema/nutrients.yaml`, the VLM output schema, `schema/eval/models.yaml`, the drift schema, the provenance enum, and the bucket object-key rules.
-- **New design decisions start as an ADR PR** (`docs/decisions/`); code follows only after both of us approve. The ADR format is in [docs/decisions/README.md](./docs/decisions/README.md).
+- **New design decisions start as an ADR PR** (`docs/decisions/`); code follows only after both of us approve. See [ADR workflow](#adr-workflow) below; the ADR format is in [docs/decisions/README.md](./docs/decisions/README.md).
 - Merge method: **rebase merge only** (commits split by layer land on main as they are). Squash merges and merge commits are disabled.
 - PRD and DEV_PLAN exist in Chinese (canonical) and English. A PR that changes one version must update the other. All other documentation is English only.
+
+### ADR workflow
+
+**When an ADR is needed**
+
+| Situation | Examples | What to do |
+| --- | --- | --- |
+| Affects both of us, or is hard to undo | Shared contracts, data structures, architecture, toolchain, external services, licensing, privacy | ADR PR first, then code |
+| Affects only the current task and is easy to undo | How to split a function, how to structure a widget | No ADR; explain the reasoning in the code PR description |
+| Both of us already agreed in a meeting or chat | Setting up FVM (ADR 0024) | ADR may share the PR with the code, as the **first, separate commit**; the PR description says it was agreed in advance |
+
+When unsure, treat it as needing an ADR PR: a small extra PR costs less than rework.
+
+**Steps**
+
+1. **ADR PR**: a single `docs:` commit that adds the ADR with status `Proposed` and its row in the ADR index. Title: `docs: propose ADR 00NN <topic> (<task-id>)`; the commit body carries `Refs:` with the task that raised the decision.
+2. Discuss in the PR comments and revise until both of us agree. Before merging, change the status to `Accepted`, approve and merge.
+3. **Code PR**: a separate PR on the task branch whose description says `Implements ADR 00NN`. Its review is about the implementation, not the decision.
+
+Do not add code commits to an ADR PR after it has been approved: "Dismiss stale approvals" is on, so any new commit dismisses the approval, and the decision could not land on `main` on its own. While an ADR PR is open, the author may prototype locally or in a draft PR, but does not request a merge.
 
 ### Branch protection for main
 
@@ -112,7 +132,7 @@ The repository is public.
 - **Reviews**: review and merge as quickly as practical, ideally within 24 hours of a PR being opened. This is a guideline, not a hard deadline: review when you have time. With the 9-hour time difference, a 24-hour window lets each of us review during our own day.
 - **Shared contract PRs first**: Hannes drafts the shared contracts (data structures first) and mica reviews them. Contract PRs get review priority because they are on the critical path.
 - **Progress sync**: one or two Google Meet calls every weekend.
-- **New decisions**: open an ADR PR first; code follows only after both of us approve it.
+- **New decisions**: open an ADR PR first; code follows only after both of us approve it (see [ADR workflow](#adr-workflow)).
 
 ## 9. Development setup
 
