@@ -2,7 +2,9 @@
 
 One record per decided design question. Numbers increase and are never reused. When a decision changes, write a new ADR and set the old one's status to "Superseded by ADR NNNN". Do not rewrite an old ADR's decision. Two exceptions: sections marked "to be filled in" (test and evaluation results), and ADRs whose introducing PR has not been merged yet, which may still be edited in place.
 
-Open an ADR PR before writing code for any new design decision, and start coding only after both developers agree (see [CONTRIBUTING.md](../../CONTRIBUTING.md)).
+Open an ADR PR before writing code for any new design decision, and start coding only after both developers agree. When an ADR is needed, when it may share a PR with code, and the exact steps are in [CONTRIBUTING §2 "ADR workflow"](../../CONTRIBUTING.md#adr-workflow).
+
+**Status flow**: an ADR is added as `Proposed` in its own PR and changed to `Accepted` in the same PR once both developers agree, right before merging. A later decision that replaces it sets its status to `Superseded by ADR NNNN`.
 
 ## Index
 
