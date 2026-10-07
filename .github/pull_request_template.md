@@ -25,7 +25,11 @@
 
 - [ ] After changing sources under `schema/`, codegen was rerun and `generated/` matches
 - [ ] No secrets, no `secrets.json`, no photos with EXIF are committed
-- [ ] New design decisions have an ADR (or this PR makes none)
+- [ ] Design decisions (pick one; see CONTRIBUTING §2 "ADR workflow"):
+  - [ ] This is an ADR PR: docs only, status `Proposed`, changed to `Accepted` before merge
+  - [ ] Implements ADR ____
+  - [ ] Makes no new design decision (local choices are explained above)
+  - [ ] Exception: the decision was agreed in advance; the ADR is the first, separate commit
 - [ ] Does this PR **change a shared contract** (`nutrients.yaml`, VLM output schema, `models.yaml`, drift schema, provenance enum, bucket object-key rules)?
   - [ ] No
   - [ ] Yes, and this PR contains only the contract change, no feature code
