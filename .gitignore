@@ -26,6 +26,8 @@ gcp-credentials*.json
 # pubspec.lock is committed on purpose (dependencies are pinned).
 # FVM: .fvmrc is committed, the local SDK link is not (ADR 0024).
 .fvm/
+# Personal version-manager config stays local (ADR 0025).
+mise.local.toml
 .dart_tool/
 .packages
 .pub/
