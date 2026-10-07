@@ -116,22 +116,26 @@ The repository is public.
 
 ## 9. Development setup
 
-Toolchain versions follow ADR 0023; Flutter is managed with FVM (ADR 0024).
+Toolchain versions follow ADR 0023. `.fvmrc` is the single source of truth for the Flutter version (ADR 0024); any version manager that takes its Flutter version from `.fvmrc` may be used (ADR 0025).
 
-1. Install [FVM](https://fvm.app/) (installs to `~/fvm/bin`, no sudo) and add it to `PATH`.
-2. In the repository root, run `fvm install`. This installs the Flutter version pinned in `.fvmrc`.
-3. Install JDK 17 and the Android SDK command-line tools, then set `JAVA_HOME` and `ANDROID_HOME` and accept the SDK licenses (`sdkmanager --licenses`). The first Android build downloads the SDK platforms it needs.
-4. Copy `secrets.example.json` to `secrets.json` (ignored by git) and fill in your values; `CONTRIBUTOR` is your GitHub username. Real values come from the password manager.
+1. **Flutter**, with either:
+   - [FVM](https://fvm.app/): install it (to `~/fvm/bin`, no sudo), add it to `PATH`, then run `fvm install` in the repository root; or
+   - another version manager such as [mise](https://mise.jdx.dev/), configured to read the version from `.fvmrc`. Keep that configuration out of git (`mise.local.toml` is ignored).
 
-Common commands (run in `app/`):
+   Check that `flutter --version` reports the version in `.fvmrc`. Use only the Dart SDK bundled with Flutter; do not install a separate Dart that could come first on `PATH`.
+2. **`.fvmrc` constraints** (ADR 0025): a stable release number, and `"flutter"` as the first key. Check both after any command that rewrites the file, such as `fvm use`.
+3. **Android**: install JDK 17 and the Android SDK command-line tools, set `JAVA_HOME` and `ANDROID_HOME`, and accept the SDK licenses (`sdkmanager --licenses`). The first Android build downloads the SDK platforms it needs.
+4. **Secrets**: copy `secrets.example.json` to `secrets.json` (ignored by git) and fill in your values; `CONTRIBUTOR` is your GitHub username. Real values come from the password manager.
+
+Common commands, run in `app/` (with FVM, prefix each with `fvm`):
 
 | Purpose | Command |
 | --- | --- |
-| Install dependencies | `fvm flutter pub get` |
-| Regenerate localizations | `fvm flutter gen-l10n` |
-| Static analysis | `fvm flutter analyze` |
-| Tests | `fvm flutter test` |
-| Debug build (Android) | `fvm flutter build apk --debug` |
-| Run with secrets | `fvm flutter run --dart-define-from-file=../secrets.json` |
+| Install dependencies | `flutter pub get` |
+| Regenerate localizations | `flutter gen-l10n` |
+| Static analysis | `flutter analyze` |
+| Tests | `flutter test` |
+| Debug build (Android) | `flutter build apk --debug` |
+| Run with secrets | `flutter run --dart-define-from-file=../secrets.json` |
 
 UI strings go into both `app/lib/l10n/app_en.arb` and `app/lib/l10n/app_zh.arb` (ADR 0004); the generated files under `app/lib/generated/l10n/` are committed and never edited by hand.
