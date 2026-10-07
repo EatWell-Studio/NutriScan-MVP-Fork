@@ -35,7 +35,7 @@ Configure in the GitHub repository settings (owner: DEV_PLAN task G-2):
 | Require a pull request before merging | On |
 | Required approvals | 1 (with two people, this means the other person approves every PR) |
 | Dismiss stale approvals when new commits are pushed | On |
-| Require status checks to pass | On. The CI jobs become required checks once P1-2 is merged (ADR 0023); until then none is selected |
+| Require status checks to pass | On: `fvmrc`, `commits`, `secrets`, `flutter` (the jobs of `.github/workflows/ci.yml`, ADR 0023) |
 | Require branches to be up to date before merging | On |
 | Require linear history | On |
 | Do not allow bypassing the above settings | On (admins cannot bypass either) |
