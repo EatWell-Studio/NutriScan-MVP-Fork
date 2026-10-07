@@ -1,6 +1,6 @@
 # ADR 0024: Flutter version management with FVM
 
-- Status: Accepted
+- Status: Accepted; the rule that Flutter and Dart always run through FVM is superseded by [ADR 0025](./0025-fvmrc-and-version-managers.md)
 - Date: 2026-09-27
 - Decision: toolchain detail of D22 (ADR 0023)
 
