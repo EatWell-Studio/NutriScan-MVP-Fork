@@ -8,7 +8,7 @@ This repository is the demo fork of EatWell-Studio/NutriScan-MVP; [FORK.md](./FO
 
 - Never request reviewers on GitHub. Before merging, review the PR together with Hannes in this CLI session.
 - Hannes owns every task and directory; ignore the Track A / Track B split and mica's ownership.
-- Fork issue numbers differ from upstream; use the fork's numbers in commits and PRs.
+- Fork issue numbers differ from upstream; use the fork's issue numbers in `#n` references (e.g. `Closes #40`). Task IDs in `Refs:` lines are unchanged.
 
 ## Project at a glance
 
