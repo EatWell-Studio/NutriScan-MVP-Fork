@@ -35,7 +35,7 @@ Open an ADR PR before writing code for any new design decision, and start coding
 | [0023](./0023-ci-architecture.md) | D22 CI architecture and commit conventions | Accepted |
 | [0024](./0024-flutter-version-via-fvm.md) | Flutter version management with FVM (refines 0023) | Accepted; partly superseded by 0025 |
 | [0025](./0025-fvmrc-and-version-managers.md) | `.fvmrc` constraints and other version managers (refines 0024) | Accepted |
-| [0026](./0026-sonnet-5-5-candidate.md) | D14 Sonnet 5.5 replaces Sonnet 5 as an evaluation candidate (amends 0002) | Proposed |
+| [0026](./0026-sonnet-5-5-candidate.md) | D14 Sonnet 5.5 replaces Sonnet 5 as an evaluation candidate (amends 0002) | Accepted |
 
 ## Template
 
