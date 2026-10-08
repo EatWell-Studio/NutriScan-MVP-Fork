@@ -1,6 +1,6 @@
 # NutriScan MVP — 开发计划
 
-2026-10-07 · v0.6（两人协作版）
+2026-10-08 · v0.7（两人协作版）
 
 > 语言：中文（主版本）· [English](./DEV_PLAN.en.md)。改动须在同一个 PR 里同步两个版本。
 
@@ -31,7 +31,7 @@
 | D11 | 桶对象布局 | 照片 + raw JSON + `_confirmed.v<N>.json`；无条码时的键规则；contributor 用 GitHub 用户名；raw JSON 记 contributor、model、effort、token 数 | 已定 | [0012](./decisions/0012-bucket-object-layout.md) |
 | D12 | 状态管理 / 本地库 | Riverpod + drift | 已定 | [0013](./decisions/0013-riverpod-drift.md) |
 | D13 | 密钥 | Anthropic：在 Hannes 的 Startup 账号下建 NutriScan 专用工作区，设工作区月度上限，每人各自一把 key（D21）；`secrets.example.json`；密码管理器；CI 跑 gitleaks | 已定 | [0014](./decisions/0014-secrets-and-api-keys.md) |
-| D14 | VLM 型号 | 阶段 0.5 评测后定。候选：Opus 5.5 / Sonnet 5（Haiku 4.5 已移出候选）；Fable 5.1 只作准确率上限参照。标准依次为：静默错误率 → P90 ≤ 25 s → 成本 | 流程已定，**型号待评测** | [0002](./decisions/0002-vlm-model-selection.md) |
+| D14 | VLM 型号 | 阶段 0.5 评测后定。候选：Opus 5.5 / Sonnet 5.5（Haiku 4.5 已移出；Sonnet 5 已是 legacy，按 ADR 0026 换成 Sonnet 5.5）；Fable 5.1 只作准确率上限参照。标准依次为：静默错误率 → P90 ≤ 25 s → 成本 | 流程已定，**型号待评测** | [0002](./decisions/0002-vlm-model-selection.md)、[0026](./decisions/0026-sonnet-5-5-candidate.md) |
 | D15 | Mistral | 只进评测脚本，App 里演示前不实现；EU 退路中排第三 | 已定 | [0003](./decisions/0003-mistral-eval-only.md) |
 | D16 | 代码许可证 + 贡献条款 | MVP 阶段用 MIT，保证最大限度的编码自由；MVP 阶段不要求 DCO 或 CLA，也不接受外部代码贡献。代码归属见 D18 | 已定 | [0021](./decisions/0021-mit-license-for-mvp.md) |
 | D17 | 服务端代理里程碑 | EU 境内推理（Vertex AI EU）与"密钥不落客户端"合并为同一个里程碑，是任何对外分发和阶段 5 的前置条件 | 已定 | [0015](./decisions/0015-server-proxy-milestone.md) |
@@ -403,7 +403,7 @@ flowchart LR
 | ④ | P50 / P90 延迟 | Opus 5.5 思考始终开启，延迟必须实测 |
 | ⑤ | 单次成本 | token 数 × 价格 |
 
-**演示前的评测矩阵**：Opus 5.5（`low`、`medium`）、Sonnet 5（`low`、`medium`）、Fable 5.1（默认 effort，仅作参照）。Mistral 的适配器演示后再加。
+**演示前的评测矩阵**：Opus 5.5（`low`、`medium`）、Sonnet 5.5（`low`、`medium`）、Fable 5.1（默认 effort，仅作参照）。Mistral 的适配器演示后再加。
 
 #### 线 B：扫码、OFF、拍照、份量、上传、汇总
 
@@ -465,7 +465,7 @@ flowchart LR
 | API 费用超出预期（D21） | 预付额度提前用完 | 工作区月度上限；评测矩阵先按 `models.yaml` 估算成本再跑 |
 | 9 小时时差 | PR 等待 review 的时间变长 | 原则上 PR 发布后 24 小时内 review；契约 PR 优先（CONTRIBUTING 第 8 节） |
 | iOS 推到演示之后（D20） | 补 iOS 时暴露平台差异（相机、权限、签名） | 代码不写 Android 专属逻辑；`mobile_scanner` 在 iOS 上已核实用 Apple Vision；演示后单独排 iOS 任务 |
-| Bedrock 上的 Opus 5.5 / Sonnet 5 不支持结构化输出 | EU 路线只能走 Vertex AI | 见 ADR 0015 |
+| Bedrock 上的 Opus 5.5 / Sonnet 5.5 不支持结构化输出 | EU 路线只能走 Vertex AI | 见 ADR 0015 |
 | 两人同时改共享契约 | 冲突、版本号撞车 | 契约 PR 单独提、先合先得（CONTRIBUTING 第 5 节） |
 | 密钥泄露（公开仓库、密钥编进 App 包） | 产生费用或往桶里写垃圾 | 工作区月度上限；每人独立 key、可单独吊销；B2 key 只写；gitleaks；分发前完成 D17 |
 | 评测照片带上个人信息 | 隐私泄露 | 去 EXIF；入库前自查画面 |

@@ -11,6 +11,7 @@
 > - 2026-09-26：开发期用 Claude 订阅（Claude Code），暂不开通 API；API 在 10/14 演示后视 Startup credits 再定（D21）。
 > - 2026-09-26：MVP 阶段代码许可证定为 MIT（D16）。
 > - 2026-09-26：分工定为线 A Hannes、线 B mica；API 改由 Hannes 的 Startup 账号预付（D21）；CI 规约（D22）；MVP 阶段不接受外部代码贡献；演示活动的参加申请待批准。
+> - 2026-10-08：评测候选里的 Sonnet 5（已是 legacy）换成 Sonnet 5.5（ADR 0026）。
 
 ## 1. 产品概述
 
@@ -128,7 +129,7 @@ flowchart LR
 | 客户端 | Flutter | 跨平台、能上架双商店、相机与扫码生态成熟。否决原生（周末项目，上架两平台的收益大于性能）和 PWA（接 API 费劲） |
 | 条码 | ML Kit（Android）/ AVFoundation（iOS） | 快、准、免费；不用 AI |
 | 本地存储 | SQLite | 权威数据源；远端无论用什么都只是同步目标 |
-| 识图 | Claude（Anthropic Messages API），一次调用用[结构化输出](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)（`output_config.format` + JSON Schema）直接返回 JSON。候选型号：Opus 5.5（[官方推荐的默认起点](https://platform.claude.com/docs/en/models/overview)）、Sonnet 5，阶段 0.5 评测后拍板（ADR 0002）。**型号 ID、价格、图片上限只在 `schema/eval/models.yaml` 定义**，本文不写具体数字 | 备选：Mistral La Plateforme（Pixtral，EU 数据驻留），只进评测脚本，是 EU 路线的第三顺位退路。否决 Groq（文本优先）和 OpenRouter `:free`（best-effort、限流、名单常换）。Claude API 无免费层，按 token 计费；按 Anthropic 商业条款，API 的输入输出[默认不用于训练](https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training)。Anthropic 没有官方 Dart SDK，App 端直接调 HTTP；批处理层用官方 Python SDK，重跑历史可以走 Message Batches（半价）。Claude 订阅（Pro / Max）[不包含 API 额度](https://support.claude.com/en/articles/9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console)；评测与 App 内提取所需的 API 额度由 Hannes 的 Startup 账号预付（D21） |
+| 识图 | Claude（Anthropic Messages API），一次调用用[结构化输出](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)（`output_config.format` + JSON Schema）直接返回 JSON。候选型号：Opus 5.5（[官方推荐的默认起点](https://platform.claude.com/docs/en/models/overview)）、Sonnet 5.5，阶段 0.5 评测后拍板（ADR 0002、ADR 0026）。**型号 ID、价格、图片上限只在 `schema/eval/models.yaml` 定义**，本文不写具体数字 | 备选：Mistral La Plateforme（Pixtral，EU 数据驻留），只进评测脚本，是 EU 路线的第三顺位退路。否决 Groq（文本优先）和 OpenRouter `:free`（best-effort、限流、名单常换）。Claude API 无免费层，按 token 计费；按 Anthropic 商业条款，API 的输入输出[默认不用于训练](https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training)。Anthropic 没有官方 Dart SDK，App 端直接调 HTTP；批处理层用官方 Python SDK，重跑历史可以走 Message Batches（半价）。Claude 订阅（Pro / Max）[不包含 API 额度](https://support.claude.com/en/articles/9876003-i-have-a-paid-claude-subscription-pro-max-team-or-enterprise-plans-why-do-i-have-to-pay-separately-to-use-the-claude-api-and-console)；评测与 App 内提取所需的 API 额度由 Hannes 的 Startup 账号预付（D21） |
 | 原始数据出口 | 自有对象存储桶（不在 Supabase 内），append-only，对象键以 `<barcode>_<timestamp>` 开头（无条码时的替代规则、确认结果的版本等见 ADR 0012） | 唯一不可再生的资产；约二十行代码；将来迁移时它不用动 |
 | 云端（触发后） | Supabase，EU 区域（Frankfurt） | 托管 Postgres + Auth + RLS + Storage + 全文搜索。否决 Firebase：营养数据强关系型、需要模糊搜索、共享库读密集按读计费 |
 | 批处理（触发后） | FastAPI + Python | 位置在数据库**下方**做批处理（读桶、重跑 VLM、归一化写回），不是 App 与数据库之间的 API 层 |
@@ -190,7 +191,7 @@ flowchart TD
 | 离线 | 扫码、本地命中、记录、汇总在无网络时完全可用；拍照可先存本地，联网后再提取。远端只能是同步目标，不能是主流程的前置条件 |
 | 数据安全 | 确认过的照片（原图与送给模型的派生图）和 raw JSON 必须在本地和桶各有一份；桶为 append-only，任何代码路径不得删除或覆盖桶内对象 |
 | 可回溯 | 每条归一化记录可追溯到它的 raw JSON、原始照片、送给模型的图片哈希、模型名称、effort 与 prompt 版本 |
-| 隐私 | 照片里可能带有手、桌面、厨房环境；照片一律去掉 EXIF（含 GPS）。Claude API 按商业条款默认不用于训练，MVP 期间两位开发者自用可接受。**Claude API 不支持 EU 境内推理**：`inference_geo` 只有 `global` 和 `us` 两个值（[数据驻留文档](https://platform.claude.com/docs/en/manage-claude/data-residency)）。EU 路线只剩两条：Google Vertex AI 的 EU 多区域（Opus 5.5 / Sonnet 5 在该区域可用，并支持结构化输出，需管理员在组织策略里开启，[Vertex AI 上的 Claude](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai)）；Amazon Bedrock 的 EU 跨区域推理（Opus 5.5 / Sonnet 5 在 Bedrock 上不支持结构化输出，见结构化输出文档）。两条都要由服务端持有云平台凭证，因此**面向开发者以外的任何用户之前，必须完成服务端代理里程碑（D17）**：VLM 调用和桶上传都经无状态代理，密钥不落客户端，推理留在 EU。Mistral 是第三顺位退路。云端一律选 EU 区域 |
+| 隐私 | 照片里可能带有手、桌面、厨房环境；照片一律去掉 EXIF（含 GPS）。Claude API 按商业条款默认不用于训练，MVP 期间两位开发者自用可接受。**Claude API 不支持 EU 境内推理**：`inference_geo` 只有 `global` 和 `us` 两个值（[数据驻留文档](https://platform.claude.com/docs/en/manage-claude/data-residency)）。EU 路线只剩两条：Google Vertex AI 的 EU 多区域（Opus 5.5 在该区域可用并支持结构化输出（需管理员在组织策略里开启）；Sonnet 5.5 是否可用待核实（ADR 0026）；[Vertex AI 上的 Claude](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai)）；Amazon Bedrock 的 EU 跨区域推理（Opus 5.5 / Sonnet 5.5 在 Bedrock 上不支持结构化输出，见结构化输出文档）。两条都要由服务端持有云平台凭证，因此**面向开发者以外的任何用户之前，必须完成服务端代理里程碑（D17）**：VLM 调用和桶上传都经无状态代理，密钥不落客户端，推理留在 EU。Mistral 是第三顺位退路。云端一律选 EU 区域 |
 | 许可合规 | 每条记录带 provenance；对外输出时能按来源过滤；BLS 数据展示处署名 Max Rubner-Institut |
 | OFF 使用条款 | 1 次 API 调用 = 1 次真实扫码；绝不批量抓取；命中结果缓存以减少重复调用 |
 | 性能 | 本地命中反馈 < 1 秒；VLM 往返受第三方限制，界面需有明确的等待态且允许取消 |
@@ -204,7 +205,7 @@ flowchart TD
 | 阶段 | 内容 | 完成标志 |
 | --- | --- | --- |
 | 0 · 验证 | 从购物小票里找 30 个以上常买的德国商品条码（含 Rewe / Lidl / Alnatura 自有品牌），直接访问 `https://world.openfoodfacts.org/api/v2/product/<barcode>`，统计 `nutriments` 填全的比例；下载 BLS zip 看营养素代码、参考量、菜品与食材的区分方式；拍 30 张以上营养成分表建评测集（超市或家中现有商品都可以），并手工录入真值 | 有一份命中率数字、一份 BLS 字段笔记、一个评测集目录 |
-| 0.5 · 选模型 | 用评测集跑 Claude 候选型号（Opus 5.5 / Sonnet 5，另跑 Fable 5.1 作准确率上限参照）与 Mistral。指标：Atwater 失败率、逐字段准确率、静默错误率、P50 / P90 延迟、单次成本。选型标准依次为：静默错误率 → P90 ≤ 25 s → 成本 | 选定 MVP 型号与 effort，评测脚本进 `schema/` 作为回归测试 |
+| 0.5 · 选模型 | 用评测集跑 Claude 候选型号（Opus 5.5 / Sonnet 5.5，另跑 Fable 5.1 作准确率上限参照）与 Mistral。指标：Atwater 失败率、逐字段准确率、静默错误率、P50 / P90 延迟、单次成本。选型标准依次为：静默错误率 → P90 ≤ 25 s → 成本 | 选定 MVP 型号与 effort，评测脚本进 `schema/` 作为回归测试 |
 | 1 · MVP | F1 扫码记录 → F2 拍照提取 + 确认 → F3 桶出口 → F4 当日汇总；全部本地 SQLite。中途里程碑：2026-10-14 演示（范围见 DEV_PLAN 4.2） | 自己连续用一周，日常商品基本在本地命中 |
 | 2 · 食材层 | F5：打包 BLS，支持无条码食材和自制饭菜 | 能记录一顿自己做的饭 |
 | 3 · 云同步（触发后） | 触发条件已满足（D19），启动时机待定。Supabase EU + Dart data access 层 + 账号；SQLite 仍是本地权威 | 换手机后数据还在 |
