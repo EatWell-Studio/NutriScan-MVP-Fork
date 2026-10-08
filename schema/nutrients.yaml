@@ -1,0 +1,191 @@
+# Nutrient fields: the single source of truth for nutrient keys (PRD §8 rule 1,
+# ADR 0005). Dart and Python code is generated from this file (C-4); never
+# duplicate these definitions by hand.
+#
+# Shared contract: change only in a dedicated PR (CONTRIBUTING §2). Keys are
+# never renamed or removed once data exists; add a new key instead.
+#
+# Per nutrient:
+#   key           internal key: snake_case with a unit suffix (ADR 0005). Names
+#                 follow the EU English label terms (carbohydrate, sugars, polyols,
+#                 protein); fiber uses the US spelling, like Open Food Facts.
+#   unit          unit of the stored value per 100 g or per 100 ml
+#   label_de      wording on German labels, Regulation (EU) No 1169/2011 Annex XV
+#                 (null if the nutrient is not part of the EU label)
+#   label_order   position in the German label order used by the confirm screen
+#                 (PRD §5); energy_kj and energy_kcal share one label line
+#   parent        key of the line a "davon" sub-item belongs to; validation
+#                 requires child <= parent (DEV_PLAN 3.3)
+#   core          shown expanded on the confirm screen; the rest is folded (PRD §5)
+#   mass_balance  counted in the "sum <= 100 g" check (DEV_PLAN 3.3)
+#   open_food_facts  Open Food Facts mapping: nutriments field id, its unit, and
+#                 the factor so that our value = OFF value x factor. (Not named
+#                 `off`: YAML 1.1 parsers such as PyYAML read `off` as false.)
+#   eurofir       EuroFIR component code: filled in after P0-3 (ADR 0005)
+#   usda          USDA FoodData Central nutrient id: filled in after P0-3 (ADR 0005)
+#   note          optional remark
+#
+# Sources: EU label order and German wording from Regulation (EU) No 1169/2011,
+# Annex XV (https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=celex%3A32011R1169).
+# OFF field ids and units from the OFF API (/api/v2/product/<barcode>) and the
+# OFF nutrients taxonomy, checked 2026-10-07.
+
+version: 1
+
+nutrients:
+  - key: energy_kj
+    unit: kJ
+    label_de: "Energie"
+    label_order: 10
+    parent: null
+    core: true
+    mass_balance: false
+    open_food_facts: {field: energy-kj, unit: kJ, factor: 1}
+    eurofir: null
+    usda: null
+    note: "Same label line as energy_kcal; kJ comes first."
+  - key: energy_kcal
+    unit: kcal
+    label_de: "Energie"
+    label_order: 11
+    parent: null
+    core: true
+    mass_balance: false
+    open_food_facts: {field: energy-kcal, unit: kcal, factor: 1}
+    eurofir: null
+    usda: null
+  - key: fat_g
+    unit: g
+    label_de: "Fett"
+    label_order: 20
+    parent: null
+    core: true
+    mass_balance: true
+    open_food_facts: {field: fat, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: saturated_fat_g
+    unit: g
+    label_de: "davon gesättigte Fettsäuren"
+    label_order: 30
+    parent: "fat_g"
+    core: true
+    mass_balance: false
+    open_food_facts: {field: saturated-fat, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: monounsaturated_fat_g
+    unit: g
+    label_de: "davon einfach ungesättigte Fettsäuren"
+    label_order: 40
+    parent: "fat_g"
+    core: false
+    mass_balance: false
+    open_food_facts: {field: monounsaturated-fat, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: polyunsaturated_fat_g
+    unit: g
+    label_de: "davon mehrfach ungesättigte Fettsäuren"
+    label_order: 50
+    parent: "fat_g"
+    core: false
+    mass_balance: false
+    open_food_facts: {field: polyunsaturated-fat, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: carbohydrate_g
+    unit: g
+    label_de: "Kohlenhydrate"
+    label_order: 60
+    parent: null
+    core: true
+    mass_balance: true
+    open_food_facts: {field: carbohydrates, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+    note: "EU labels exclude dietary fibre from carbohydrate."
+  - key: sugars_g
+    unit: g
+    label_de: "davon Zucker"
+    label_order: 70
+    parent: "carbohydrate_g"
+    core: true
+    mass_balance: false
+    open_food_facts: {field: sugars, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+    note: "Total sugars; 'davon Zucker' maps here."
+  - key: added_sugars_g
+    unit: g
+    label_de: null
+    label_order: 75
+    parent: "sugars_g"
+    core: false
+    mass_balance: false
+    open_food_facts: {field: added-sugars, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+    note: "Not part of the EU label; kept separate from total sugars (PRD §3)."
+  - key: polyols_g
+    unit: g
+    label_de: "davon mehrwertige Alkohole"
+    label_order: 80
+    parent: "carbohydrate_g"
+    core: false
+    mass_balance: false
+    open_food_facts: {field: polyols, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: starch_g
+    unit: g
+    label_de: "davon Stärke"
+    label_order: 90
+    parent: "carbohydrate_g"
+    core: false
+    mass_balance: false
+    open_food_facts: {field: starch, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: fiber_g
+    unit: g
+    label_de: "Ballaststoffe"
+    label_order: 100
+    parent: null
+    core: false
+    mass_balance: true
+    open_food_facts: {field: fiber, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: protein_g
+    unit: g
+    label_de: "Eiweiß"
+    label_order: 110
+    parent: null
+    core: true
+    mass_balance: true
+    open_food_facts: {field: proteins, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+  - key: salt_g
+    unit: g
+    label_de: "Salz"
+    label_order: 120
+    parent: null
+    core: true
+    mass_balance: true
+    open_food_facts: {field: salt, unit: g, factor: 1}
+    eurofir: null
+    usda: null
+    note: "salt_g = sodium_mg x 2.5 / 1000 (PRD §3); note the g/mg units."
+  - key: sodium_mg
+    unit: mg
+    label_de: "Natrium"
+    label_order: 125
+    parent: null
+    core: false
+    mass_balance: false
+    open_food_facts: {field: sodium, unit: g, factor: 1000}
+    eurofir: null
+    usda: null
+    note: "Rarely on EU labels; derived from salt when missing. OFF stores sodium in g."
