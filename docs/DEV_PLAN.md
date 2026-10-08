@@ -4,6 +4,8 @@
 
 > 语言：中文（主版本）· [English](./DEV_PLAN.en.md)。改动须在同一个 PR 里同步两个版本。
 
+> **演示用 fork**：本仓库是上游的演示版 fork，所有任务都由 Hannes 负责，任务表里的"负责"列仍按上游的分工书写；fork 的规则见 [FORK.md](../FORK.md)。
+
 本文档把 [PRD](./PRD.md) 拆成可执行的任务。PRD 说明"做什么、为什么"，本文说明"按什么顺序、需要多少工时、做到什么程度算完"。本文**只放计划，不记录进度**：进度在 GitHub Issues / Projects 里跟踪（见 [CONTRIBUTING.md](../CONTRIBUTING.md)）。已定的设计决策各有一条 ADR，放在 [docs/decisions/](./decisions/)。
 
 **目标日期**：2026-10-14 在 Claude Founder House Stockholm 现场演示（Android 设备）。活动参加申请尚待批准；无论是否获批，开发进度都以 10/14 为目标，演示当天的安排获批后再定。在此之前只做第 4.2 节"演示路线"里的内容。

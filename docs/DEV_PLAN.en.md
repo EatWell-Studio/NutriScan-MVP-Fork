@@ -4,6 +4,8 @@
 
 > Language: English (translation) · [中文（主版本）](./DEV_PLAN.md). The Chinese version is canonical; update both in the same PR.
 
+> **Demo fork**: this repository is the demo fork of upstream; Hannes owns every task, while the "Owner" column still shows the upstream split. Fork rules are in [FORK.md](../FORK.md).
+
 This document breaks the [PRD](./PRD.en.md) down into executable tasks. The PRD says "what and why"; this document says "in what order, how many hours, and what counts as done". This document **contains only the plan and does not track progress**: progress is tracked in GitHub Issues / Projects (see [CONTRIBUTING.md](../CONTRIBUTING.md)). Each decided design decision has its own ADR in [docs/decisions/](./decisions/).
 
 **Target date**: 2026-10-14 is the live demo at Claude Founder House Stockholm (on an Android device). The application to attend the event is still pending; approved or not, development targets 10/14, and the demo-day arrangements are settled once it is approved. Until then, only the contents of the section 4.2 "demo route" are in scope.
