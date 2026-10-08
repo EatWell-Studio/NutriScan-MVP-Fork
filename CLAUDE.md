@@ -2,6 +2,14 @@
 
 Working rules for Claude Code in this repository. Both developers' Claude Code sessions share this file. The human collaboration process is in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+## Demo fork
+
+This repository is the demo fork of EatWell-Studio/NutriScan-MVP; [FORK.md](./FORK.md) overrides the rules below where they conflict:
+
+- Never request reviewers on GitHub. Before merging, review the PR together with Hannes in this CLI session.
+- Hannes owns every task and directory; ignore the Track A / Track B split and mica's ownership.
+- Fork issue numbers differ from upstream; use the fork's numbers in commits and PRs.
+
 ## Project at a glance
 
 - NutriScan: an offline-first personal food log (Flutter + local SQLite). A barcode hit is logged immediately; on a miss the user photographs the nutrition label, Claude extracts it, and the user confirms before it is stored.

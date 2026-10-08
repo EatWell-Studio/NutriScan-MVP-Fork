@@ -1,5 +1,7 @@
 # Contributing
 
+> **This is the demo fork.** [FORK.md](./FORK.md) overrides this file where they conflict: one maintainer, no required approvals, reviews done in the Claude Code CLI.
+
 Two developers, a public repository, one monorepo. This file covers the human collaboration process; the rules for Claude Code are in [CLAUDE.md](./CLAUDE.md). If the two conflict, this file wins and CLAUDE.md must be fixed promptly.
 
 Members: `hannesgao` (Hannes) and `hyhcrh` (mica). **External code contributions are not accepted during the MVP phase** (ADR 0021); issues are welcome.

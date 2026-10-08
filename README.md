@@ -1,5 +1,7 @@
 # NutriScan
 
+> **Demo fork** of [EatWell-Studio/NutriScan-MVP](https://github.com/EatWell-Studio/NutriScan-MVP) for the Claude Founder House Stockholm demo. Maintained by Hannes alone; see [FORK.md](./FORK.md).
+
 An offline-first food log with near-zero entry cost. Scan a barcode and the product is logged. If the product is unknown, photograph its nutrition label: Claude extracts the values, rule-based checks flag suspicious fields, and you confirm before anything is stored.
 
 > **Status:** early development. The MVP is being planned and built; there is no application code yet.
