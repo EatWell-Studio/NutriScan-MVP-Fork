@@ -11,6 +11,7 @@ This repository is a fork of [EatWell-Studio/NutriScan-MVP](https://github.com/E
 
 - **Pull requests are still required**: `main` is protected (linear history, no force pushes, admins included), and every change lands through a PR, merged with rebase merge.
 - **No approvals are required.** Reviews happen together with Claude Code in the CLI before merging. Do not request reviewers on GitHub.
+- **Reviews in the CLI** use the checklist, comment prefixes (`blocking:` / `suggestion:` / `nit:` / `question:`) and summary format from CONTRIBUTING §2 "Reviewing a PR". The summary is written in the CLI session instead of a GitHub review; merge once no `blocking:` point is open.
 - **ADRs**: the ADR workflow (CONTRIBUTING §2) still applies, with Hannes as the only person who accepts an ADR.
 - **Code ownership**: CODEOWNERS lists `hannesgao` only; there are no track boundaries.
 - Everything else is unchanged: commit format with `Refs:` lines, CI, secrets, toolchain and the hard rules in CLAUDE.md and the PRD.
