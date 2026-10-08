@@ -1,23 +1,4 @@
-# CODEOWNERS: requests reviewers automatically. The rules are in CONTRIBUTING.md §2 and §4;
-# the work split is explained in docs/DEV_PLAN.en.md §4.3.
-# Later rules override earlier ones, so more specific paths come last.
+# CODEOWNERS for the demo fork: Hannes maintains everything (FORK.md).
+# Reviewers are not requested on GitHub here; reviews happen in the Claude Code CLI.
 
-# Default and shared areas: both members
-*                                   @hannesgao @hyhcrh
-/schema/                            @hannesgao @hyhcrh
-/app/lib/data/db/                   @hannesgao @hyhcrh
-
-# Track A: Hannes
-/app/lib/domain/                    @hannesgao
-/app/lib/data/clients/vlm/          @hannesgao
-/app/lib/features/confirm/          @hannesgao
-
-# Track B: mica
-/app/lib/features/scan/             @hyhcrh
-/app/lib/features/capture/          @hyhcrh
-/app/lib/features/portion/          @hyhcrh
-/app/lib/features/summary/          @hyhcrh
-/app/lib/data/repositories/         @hyhcrh
-/app/lib/data/clients/off/          @hyhcrh
-/app/lib/data/clients/bucket/       @hyhcrh
-/app/lib/data/upload/               @hyhcrh
+*    @hannesgao
