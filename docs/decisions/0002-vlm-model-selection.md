@@ -1,6 +1,6 @@
 # ADR 0002: VLM model selection process and criteria
 
-- Status: Accepted (process and criteria). The model is added to the "Results" section after the P05-5 evaluation.
+- Status: Accepted (process and criteria). The model is added to the "Results" section after the P05-5 evaluation. The candidate list is amended by [ADR 0026](./0026-sonnet-5-5-candidate.md).
 - Date: 2026-09-26
 - Decision: D14
 

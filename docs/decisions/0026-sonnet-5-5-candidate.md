@@ -1,6 +1,6 @@
 # ADR 0026: Sonnet 5.5 replaces Sonnet 5 as an evaluation candidate
 
-- Status: Proposed
+- Status: Accepted (by Hannes in the demo fork, 2026-10-08; still proposed upstream)
 - Date: 2026-10-07
 - Decision: D14 (amends the candidate list of ADR 0002)
 
