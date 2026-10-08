@@ -6,7 +6,9 @@
 # never renamed or removed once data exists; add a new key instead.
 #
 # Per nutrient:
-#   key           internal key: snake_case with a unit suffix (ADR 0005)
+#   key           internal key: snake_case with a unit suffix (ADR 0005). Names
+#                 follow the EU English label terms (carbohydrate, sugars, polyols,
+#                 protein); fiber uses the US spelling, like Open Food Facts.
 #   unit          unit of the stored value per 100 g or per 100 ml
 #   label_de      wording on German labels, Regulation (EU) No 1169/2011 Annex XV
 #                 (null if the nutrient is not part of the EU label)
@@ -16,8 +18,9 @@
 #                 requires child <= parent (DEV_PLAN 3.3)
 #   core          shown expanded on the confirm screen; the rest is folded (PRD §5)
 #   mass_balance  counted in the "sum <= 100 g" check (DEV_PLAN 3.3)
-#   off           Open Food Facts mapping: nutriments field id, its unit, and the
-#                 factor so that our value = OFF value x factor
+#   open_food_facts  Open Food Facts mapping: nutriments field id, its unit, and
+#                 the factor so that our value = OFF value x factor. (Not named
+#                 `off`: YAML 1.1 parsers such as PyYAML read `off` as false.)
 #   eurofir       EuroFIR component code: filled in after P0-3 (ADR 0005)
 #   usda          USDA FoodData Central nutrient id: filled in after P0-3 (ADR 0005)
 #   note          optional remark
@@ -37,7 +40,7 @@ nutrients:
     parent: null
     core: true
     mass_balance: false
-    off: {field: energy-kj, unit: kJ, factor: 1}
+    open_food_facts: {field: energy-kj, unit: kJ, factor: 1}
     eurofir: null
     usda: null
     note: "Same label line as energy_kcal; kJ comes first."
@@ -48,7 +51,7 @@ nutrients:
     parent: null
     core: true
     mass_balance: false
-    off: {field: energy-kcal, unit: kcal, factor: 1}
+    open_food_facts: {field: energy-kcal, unit: kcal, factor: 1}
     eurofir: null
     usda: null
   - key: fat_g
@@ -58,7 +61,7 @@ nutrients:
     parent: null
     core: true
     mass_balance: true
-    off: {field: fat, unit: g, factor: 1}
+    open_food_facts: {field: fat, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: saturated_fat_g
@@ -68,7 +71,7 @@ nutrients:
     parent: "fat_g"
     core: true
     mass_balance: false
-    off: {field: saturated-fat, unit: g, factor: 1}
+    open_food_facts: {field: saturated-fat, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: monounsaturated_fat_g
@@ -78,7 +81,7 @@ nutrients:
     parent: "fat_g"
     core: false
     mass_balance: false
-    off: {field: monounsaturated-fat, unit: g, factor: 1}
+    open_food_facts: {field: monounsaturated-fat, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: polyunsaturated_fat_g
@@ -88,7 +91,7 @@ nutrients:
     parent: "fat_g"
     core: false
     mass_balance: false
-    off: {field: polyunsaturated-fat, unit: g, factor: 1}
+    open_food_facts: {field: polyunsaturated-fat, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: carbohydrate_g
@@ -98,7 +101,7 @@ nutrients:
     parent: null
     core: true
     mass_balance: true
-    off: {field: carbohydrates, unit: g, factor: 1}
+    open_food_facts: {field: carbohydrates, unit: g, factor: 1}
     eurofir: null
     usda: null
     note: "EU labels exclude dietary fibre from carbohydrate."
@@ -109,7 +112,7 @@ nutrients:
     parent: "carbohydrate_g"
     core: true
     mass_balance: false
-    off: {field: sugars, unit: g, factor: 1}
+    open_food_facts: {field: sugars, unit: g, factor: 1}
     eurofir: null
     usda: null
     note: "Total sugars; 'davon Zucker' maps here."
@@ -120,7 +123,7 @@ nutrients:
     parent: "sugars_g"
     core: false
     mass_balance: false
-    off: {field: added-sugars, unit: g, factor: 1}
+    open_food_facts: {field: added-sugars, unit: g, factor: 1}
     eurofir: null
     usda: null
     note: "Not part of the EU label; kept separate from total sugars (PRD §3)."
@@ -131,7 +134,7 @@ nutrients:
     parent: "carbohydrate_g"
     core: false
     mass_balance: false
-    off: {field: polyols, unit: g, factor: 1}
+    open_food_facts: {field: polyols, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: starch_g
@@ -141,7 +144,7 @@ nutrients:
     parent: "carbohydrate_g"
     core: false
     mass_balance: false
-    off: {field: starch, unit: g, factor: 1}
+    open_food_facts: {field: starch, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: fiber_g
@@ -151,7 +154,7 @@ nutrients:
     parent: null
     core: false
     mass_balance: true
-    off: {field: fiber, unit: g, factor: 1}
+    open_food_facts: {field: fiber, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: protein_g
@@ -161,7 +164,7 @@ nutrients:
     parent: null
     core: true
     mass_balance: true
-    off: {field: proteins, unit: g, factor: 1}
+    open_food_facts: {field: proteins, unit: g, factor: 1}
     eurofir: null
     usda: null
   - key: salt_g
@@ -171,10 +174,10 @@ nutrients:
     parent: null
     core: true
     mass_balance: true
-    off: {field: salt, unit: g, factor: 1}
+    open_food_facts: {field: salt, unit: g, factor: 1}
     eurofir: null
     usda: null
-    note: "Salt = sodium x 2.5 (PRD §3)."
+    note: "salt_g = sodium_mg x 2.5 / 1000 (PRD §3); note the g/mg units."
   - key: sodium_mg
     unit: mg
     label_de: "Natrium"
@@ -182,7 +185,7 @@ nutrients:
     parent: null
     core: false
     mass_balance: false
-    off: {field: sodium, unit: g, factor: 1000}
+    open_food_facts: {field: sodium, unit: g, factor: 1000}
     eurofir: null
     usda: null
     note: "Rarely on EU labels; derived from salt when missing. OFF stores sodium in g."
