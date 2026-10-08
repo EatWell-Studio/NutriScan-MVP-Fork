@@ -1,6 +1,6 @@
 # NutriScan MVP — Development Plan
 
-2026-10-07 · v0.6 (two-person edition)
+2026-10-08 · v0.7 (two-person edition)
 
 > Language: English (translation) · [中文（主版本）](./DEV_PLAN.md). The Chinese version is canonical; update both in the same PR.
 
@@ -31,7 +31,7 @@ This document breaks the [PRD](./PRD.en.md) down into executable tasks. The PRD 
 | D11 | Bucket object layout | Photos + raw JSON + `_confirmed.v<N>.json`; key rule for items without a barcode; contributor is the GitHub username; raw JSON records contributor, model, effort, token counts | Decided | [0012](./decisions/0012-bucket-object-layout.md) |
 | D12 | State management / local DB | Riverpod + drift | Decided | [0013](./decisions/0013-riverpod-drift.md) |
 | D13 | Secrets | Anthropic: a dedicated NutriScan workspace under Hannes's Startup account, with a workspace monthly limit and one key per person (D21); `secrets.example.json`; password manager; gitleaks in CI | Decided | [0014](./decisions/0014-secrets-and-api-keys.md) |
-| D14 | VLM model | Decided after the phase 0.5 evaluation. Candidates: Opus 5.5 / Sonnet 5 (Haiku 4.5 has been dropped); Fable 5.1 only as an accuracy-ceiling reference. Criteria in order: silent error rate → P90 ≤ 25 s → cost | Process decided, **model pending evaluation** | [0002](./decisions/0002-vlm-model-selection.md) |
+| D14 | VLM model | Decided after the phase 0.5 evaluation. Candidates: Opus 5.5 / Sonnet 5.5 (Haiku 4.5 has been dropped; Sonnet 5 is legacy and was replaced by Sonnet 5.5 per ADR 0026); Fable 5.1 only as an accuracy-ceiling reference. Criteria in order: silent error rate → P90 ≤ 25 s → cost | Process decided, **model pending evaluation** | [0002](./decisions/0002-vlm-model-selection.md), [0026](./decisions/0026-sonnet-5-5-candidate.md) |
 | D15 | Mistral | Only in the evaluation script; not implemented in the app before the demo; third among EU fallbacks | Decided | [0003](./decisions/0003-mistral-eval-only.md) |
 | D16 | Code license + contribution terms | MIT during the MVP phase, for maximum freedom in coding; no DCO or CLA during the MVP phase, and no external code contributions. Code ownership: see D18 | Decided | [0021](./decisions/0021-mit-license-for-mvp.md) |
 | D17 | Server-side proxy milestone | In-EU inference (Vertex AI EU) and "no secrets on the client" merged into a single milestone; a prerequisite for any external distribution and for phase 5 | Decided | [0015](./decisions/0015-server-proxy-milestone.md) |
@@ -403,7 +403,7 @@ flowchart LR
 | ④ | P50 / P90 latency | Opus 5.5's thinking is always on, so latency must be measured |
 | ⑤ | Cost per call | Token counts × prices |
 
-**Evaluation matrix before the demo**: Opus 5.5 (`low`, `medium`), Sonnet 5 (`low`, `medium`), Fable 5.1 (default effort, reference only). The Mistral adapter is added after the demo.
+**Evaluation matrix before the demo**: Opus 5.5 (`low`, `medium`), Sonnet 5.5 (`low`, `medium`), Fable 5.1 (default effort, reference only). The Mistral adapter is added after the demo.
 
 #### Track B: scan, OFF, capture, portion, upload, summary
 
@@ -465,7 +465,7 @@ flowchart LR
 | API costs higher than expected (D21) | The prepaid credit runs out early | Workspace monthly limit; estimate the evaluation matrix cost from `models.yaml` before running it |
 | 9-hour time difference | PRs wait longer for review | Review within 24 hours of a PR being opened as a guideline; contract PRs first (CONTRIBUTING section 8) |
 | iOS deferred until after the demo (D20) | Platform differences surface when iOS is added (camera, permissions, signing) | No Android-specific logic in the code; `mobile_scanner` verified to use Apple Vision on iOS; schedule separate iOS tasks after the demo |
-| Opus 5.5 / Sonnet 5 on Bedrock do not support structured outputs | The EU route can only go through Vertex AI | See ADR 0015 |
+| Opus 5.5 / Sonnet 5.5 on Bedrock do not support structured outputs | The EU route can only go through Vertex AI | See ADR 0015 |
 | Both people change the shared contract at the same time | Conflicts, version number collisions | Contract PRs submitted separately, first merged wins (CONTRIBUTING section 5) |
 | Secret leak (public repo, secrets compiled into the app package) | Costs incurred, or junk written to the bucket | Workspace monthly limit; separate per-person keys, revocable individually; B2 key write-only; gitleaks; complete D17 before distribution |
 | Evaluation photos contain personal information | Privacy leak | Strip EXIF; check the image content before committing |
